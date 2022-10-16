@@ -1,19 +1,16 @@
-from sklearn.datasets import make_classification
-from sklearn.model_selection import train_test_split
-import numpy as np
+from sklearn.datasets import make_regression
+import pandas as pd
 import os
+import numpy as np
 
-seed = 42
-# Generate data
-X, y = make_classification(n_samples=1000, random_state=seed)
+# If there's no dataset in the project directory, create a reasonably large one. 
+# If it exists, append some new observations. 
+if os.path.isfile("data.csv"):
+    n = 1
+else:
+    n = 50
 
-# Make a train/test split
-X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=seed)
-
-# Save it
-if not os.path.isdir("data"):
-    os.mkdir("data")
-np.savetxt("data/train_features.csv", X_train)
-np.savetxt("data/test_features.csv", X_test)
-np.savetxt("data/train_labels.csv", y_train)
-np.savetxt("data/test_labels.csv", y_test)
+for i in range(0,n):    
+    X, y = make_regression(10000,n_features = 10)
+    df = pd.DataFrame(X)
+    df.to_csv("data.csv",mode='a')
